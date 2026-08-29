@@ -54,7 +54,8 @@ export async function probeModelContext(sentinel: string): Promise<ProbeResult> 
   if (!('registerTool' in mc)) {
     return {
       supported: false,
-      reason: 'document.modelContext exists but registerTool is missing — unexpected Chromium build',
+      reason:
+        'document.modelContext exists but registerTool is missing — unexpected Chromium build',
       tools: []
     }
   }
