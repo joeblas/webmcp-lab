@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { DEFAULT_URL, type NavState, type SettingsPublic, type WebMCPState } from '../../shared/types'
+import {
+  DEFAULT_URL,
+  type NavState,
+  type SettingsPublic,
+  type WebMCPState
+} from '../../shared/types'
 import { TopBar } from '@/components/TopBar'
 import { BrowserPane } from '@/components/BrowserPane'
 import { SidePanel } from '@/components/SidePanel'

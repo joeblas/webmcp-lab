@@ -60,7 +60,12 @@ export function TopBar({ nav, webmcp, onOpenSettings }: TopBarProps): React.JSX.
       >
         <ArrowRight />
       </Button>
-      <Button variant="ghost" size="icon-sm" onClick={() => window.api.reload()} aria-label="Reload">
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        onClick={() => window.api.reload()}
+        aria-label="Reload"
+      >
         {nav.loading ? <Loader2 className="animate-spin" /> : <RotateCw />}
       </Button>
 

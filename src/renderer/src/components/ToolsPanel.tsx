@@ -12,15 +12,7 @@ import {
 } from '@/components/ui/attachment'
 import { prettyJson } from '@/lib/format'
 import type { ExecResult, ToolDescriptor, WebMCPState } from '../../../shared/types'
-import {
-  ChevronDown,
-  CircleCheck,
-  CircleX,
-  Loader2,
-  Play,
-  RefreshCw,
-  Wrench
-} from 'lucide-react'
+import { ChevronDown, CircleCheck, CircleX, Loader2, Play, RefreshCw, Wrench } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface ToolsPanelProps {

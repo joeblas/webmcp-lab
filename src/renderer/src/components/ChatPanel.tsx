@@ -58,9 +58,9 @@ export function ChatPanel({ hasApiKey, onOpenSettings }: ChatPanelProps): React.
         </div>
         <h2 className="text-sm font-semibold">Bring your own key</h2>
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Point WebMCP Lab at any OpenAI-compatible endpoint (base URL, API key, and model) and
-          the chat can call the tools this page registers. Until then, run tools manually from
-          the Tools tab.
+          Point WebMCP Lab at any OpenAI-compatible endpoint (base URL, API key, and model) and the
+          chat can call the tools this page registers. Until then, run tools manually from the Tools
+          tab.
         </p>
         <Button size="sm" onClick={onOpenSettings}>
           Configure model
@@ -79,8 +79,8 @@ export function ChatPanel({ hasApiKey, onOpenSettings }: ChatPanelProps): React.
                 <div className="flex flex-col items-center gap-3 px-4 py-10 text-center">
                   <Sparkles className="size-5 text-muted-foreground" />
                   <p className="text-xs text-muted-foreground">
-                    Ask about the page — the model can call every WebMCP tool it registers, and
-                    you can watch the live page react.
+                    Ask about the page — the model can call every WebMCP tool it registers, and you
+                    can watch the live page react.
                   </p>
                   <div className="flex w-full flex-col gap-1.5">
                     {EXAMPLE_PROMPTS.map((prompt) => (
@@ -211,7 +211,11 @@ function ChatItemView({ item }: { item: ChatItem }): React.JSX.Element {
   }
 }
 
-function ToolCallMarker({ item }: { item: Extract<ChatItem, { kind: 'tool' }> }): React.JSX.Element {
+function ToolCallMarker({
+  item
+}: {
+  item: Extract<ChatItem, { kind: 'tool' }>
+}): React.JSX.Element {
   const [open, setOpen] = useState(false)
 
   return (
@@ -236,11 +240,7 @@ function ToolCallMarker({ item }: { item: Extract<ChatItem, { kind: 'tool' }> })
             <Wrench className="size-3 shrink-0 opacity-60" />
             <code className="truncate font-mono text-xs">{item.name}</code>
             <span className="shrink-0 text-xs opacity-70">
-              {item.status === 'running'
-                ? 'running…'
-                : item.status === 'done'
-                  ? 'done'
-                  : 'failed'}
+              {item.status === 'running' ? 'running…' : item.status === 'done' ? 'done' : 'failed'}
             </span>
           </MarkerContent>
           <ChevronDown
