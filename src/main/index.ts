@@ -5,7 +5,12 @@ import icon from '../../resources/icon.png?asset'
 import { GuestTab } from './guest'
 import { SettingsStore } from './settings'
 import { ChatEngine } from './chat'
-import type { ChatEvent, OpenAIMessage, Rect, SettingsUpdate } from '../shared/types'
+import type {
+  ChatEvent,
+  OpenAIMessage,
+  Rect,
+  SettingsUpdate
+} from '../shared/types'
 
 // MUST run before app.ready — this is what turns document.modelContext on in
 // every renderer (verified against Electron 44.0.0 / Chromium 152.0.7977.54).
@@ -73,13 +78,7 @@ function createWindow(): void {
 
   win.on('closed', () => {
     ipcMain.removeAllListeners()
-    const handlers = [
-      'webmcp:refresh',
-      'webmcp:execute',
-      'settings:get',
-      'settings:update',
-      'chat:send'
-    ]
+    const handlers = ['webmcp:refresh', 'webmcp:execute', 'settings:get', 'settings:update', 'chat:send']
     for (const channel of handlers) {
       ipcMain.removeHandler(channel)
     }

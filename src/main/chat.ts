@@ -64,10 +64,7 @@ export class ChatEngine {
 
     try {
       for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
-        const request = [
-          { role: 'system', content: this.systemPrompt() } as OpenAIMessage,
-          ...messages
-        ]
+        const request = [{ role: 'system', content: this.systemPrompt() } as OpenAIMessage, ...messages]
         const { content, toolCalls } = await this.streamCompletion(
           { baseUrl, apiKey, model, messages: request, tools, signal },
           emit
@@ -195,7 +192,10 @@ export class ChatEngine {
     }
 
     let content = ''
-    const toolCallsByIndex = new Map<number, { id: string; name: string; args: string }>()
+    const toolCallsByIndex = new Map<
+      number,
+      { id: string; name: string; args: string }
+    >()
 
     const reader = response.body.getReader()
     const decoder = new TextDecoder()
