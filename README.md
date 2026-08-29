@@ -16,6 +16,8 @@ Not a generic MCP server, not an agent platform, not a DevTools clone (Chrome
 already has an Application → WebMCP inspect panel — this is the _talk-to-it_
 side).
 
+![WebMCP Lab talking to verdant, 13 tools registered](docs/screenshot.png)
+
 ## Run it
 
 ```sh
