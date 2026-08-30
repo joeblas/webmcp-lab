@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Bubble, BubbleContent } from '@/components/ui/bubble'
 import { Message, MessageContent } from '@/components/ui/message'
 import { Marker, MarkerContent, MarkerIcon } from '@/components/ui/marker'
+import { Spinner } from '@/components/ui/spinner'
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -21,7 +22,6 @@ import {
   CircleX,
   Eraser,
   KeyRound,
-  Loader2,
   Sparkles,
   Square,
   TriangleAlert,
@@ -41,7 +41,7 @@ const EXAMPLE_PROMPTS = [
 ]
 
 export function ChatPanel({ hasApiKey, onOpenSettings }: ChatPanelProps): React.JSX.Element {
-  const { items, sending, send, stop, clear } = useChat()
+  const { items, activity, sending, send, stop, clear } = useChat()
   const [draft, setDraft] = useState('')
 
   const submit = (): void => {
@@ -102,6 +102,14 @@ export function ChatPanel({ hasApiKey, onOpenSettings }: ChatPanelProps): React.
                   <ChatItemView item={item} />
                 </MessageScrollerItem>
               ))}
+              {activity.kind === 'thinking' && (
+                <Marker role="status">
+                  <MarkerIcon>
+                    <Spinner />
+                  </MarkerIcon>
+                  <MarkerContent className="shimmer">Thinking…</MarkerContent>
+                </Marker>
+              )}
             </MessageScrollerContent>
           </MessageScrollerViewport>
           <MessageScrollerButton />
@@ -229,7 +237,7 @@ function ToolCallMarker({
         >
           <MarkerIcon>
             {item.status === 'running' ? (
-              <Loader2 className="animate-spin" />
+              <Spinner />
             ) : item.status === 'done' ? (
               <CircleCheck className="text-emerald-400" />
             ) : (
@@ -239,7 +247,9 @@ function ToolCallMarker({
           <MarkerContent className="flex min-w-0 items-center gap-1.5">
             <Wrench className="size-3 shrink-0 opacity-60" />
             <code className="truncate font-mono text-xs">{item.name}</code>
-            <span className="shrink-0 text-xs opacity-70">
+            <span
+              className={cn('shrink-0 text-xs opacity-70', item.status === 'running' && 'shimmer')}
+            >
               {item.status === 'running' ? 'running…' : item.status === 'done' ? 'done' : 'failed'}
             </span>
           </MarkerContent>
