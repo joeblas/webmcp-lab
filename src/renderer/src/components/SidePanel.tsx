@@ -32,14 +32,15 @@ export function SidePanel({ webmcp, settings, onOpenSettings }: SidePanelProps):
         </TabButton>
       </div>
       <div className="min-h-0 flex-1">
-        {tab === 'chat' ? (
+        <div hidden={tab !== 'chat'} className="h-full">
           <ChatPanel
             hasApiKey={Boolean(settings?.hasApiKey && settings.model)}
             onOpenSettings={onOpenSettings}
           />
-        ) : (
+        </div>
+        <div hidden={tab !== 'tools'} className="h-full">
           <ToolsPanel webmcp={webmcp} />
-        )}
+        </div>
       </div>
     </aside>
   )
