@@ -16,8 +16,24 @@ export type ChatItem =
     }
   | { kind: 'error'; id: string; text: string }
 
+export type ChatActivity =
+  | { kind: 'idle' }
+  | { kind: 'thinking' }
+  | { kind: 'streaming' }
+  | { kind: 'tool-running' }
+
+export function deriveActivity(items: readonly ChatItem[], sending: boolean): ChatActivity {
+  if (!sending) return { kind: 'idle' }
+  const last = items[items.length - 1]
+  if (last?.kind === 'assistant' && last.streaming) return { kind: 'streaming' }
+  if (last?.kind === 'tool' && last.status === 'running') return { kind: 'tool-running' }
+  if (last?.kind === 'assistant' || last?.kind === 'error') return { kind: 'idle' }
+  return { kind: 'thinking' }
+}
+
 interface UseChatResult {
   items: ChatItem[]
+  activity: ChatActivity
   sending: boolean
   send: (text: string) => void
   stop: () => void
@@ -62,7 +78,7 @@ export function useChat(): UseChatResult {
     setItems([])
   }, [])
 
-  return { items, sending, send, stop, clear }
+  return { items, activity: deriveActivity(items, sending), sending, send, stop, clear }
 }
 
 function applyEvent(items: ChatItem[], event: ChatEvent): ChatItem[] {
@@ -107,8 +123,26 @@ function applyEvent(items: ChatItem[], event: ChatEvent): ChatItem[] {
           : item
       )
     case 'error':
-      return [...items, { kind: 'error', id: id(), text: event.message }]
+      return finalizeRun([...items, { kind: 'error', id: id(), text: event.message }])
     case 'done':
-      return items
+      return finalizeRun(items)
   }
+}
+
+function inProgress(item: ChatItem): boolean {
+  return (
+    (item.kind === 'assistant' && item.streaming) ||
+    (item.kind === 'tool' && item.status === 'running')
+  )
+}
+
+function finalizeRun(items: ChatItem[]): ChatItem[] {
+  if (!items.some(inProgress)) return items
+  return items.map((item) =>
+    item.kind === 'assistant' && item.streaming
+      ? { ...item, streaming: false }
+      : item.kind === 'tool' && item.status === 'running'
+        ? { ...item, status: 'error', error: 'Interrupted.' }
+        : item
+  )
 }
